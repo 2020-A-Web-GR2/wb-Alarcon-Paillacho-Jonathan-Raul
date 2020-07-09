@@ -1,12 +1,12 @@
 
 import {
-    BadRequestException,
+    BadRequestException, Body,
     Controller,
     Delete,
     Get,
     Header,
     HttpCode, Param,
-    Post,
+    Post, Query,
     UnauthorizedException
 } from "@nestjs/common";
 
@@ -45,6 +45,8 @@ export class HttpJuegoController {
         @Param() parametrosRuta
     ){
         console.log('Parametros', parametrosRuta);
+        isNaN(parametrosRuta.edad)
+        isNaN(parametrosRuta.altura)
         const edad = Number(parametrosRuta.edad);
         const altura = Number(parametrosRuta.altura);
         return edad + altura;
@@ -52,4 +54,42 @@ export class HttpJuegoController {
     //Todos los parámetros nos llegan como string
     //Los parametros de ruta y de consulta viajan
     //los dos llegan como String
+
+    //clase 09/07/2020
+    @Get('parametros-consulta')
+    parametrosConsulta(
+        @Query() parametrosDeConsulta
+    ){
+        console.log('parametrosDeConsulta', parametrosDeConsulta);
+        const nombre = String(parametrosDeConsulta.nombre)
+        const apellido = String(parametrosDeConsulta.apellido)
+        if (isNaN(parametrosDeConsulta.nombre) == true && isNaN(parametrosDeConsulta.apellido)){
+            return nombre + ' ' + apellido;
+        }else{
+            return ':)';
+        }
+
+    }
+
+
+    @Post ('parametros-cuerpo')
+    parametrosCuerpo(
+        @Body() parametrosDeCuerpo
+    ){
+        console.log('Parametros de cuerpo', parametrosDeCuerpo);
+        return 'Registro creado';
+    }
+
+    //validaciones
+    //Es lo más importante
+
+
+
+
+
+
+
+
+
+
 }
