@@ -6,9 +6,11 @@ import {
     Get,
     Header,
     HttpCode, Param,
-    Post, Query,
+    Post, Query, Req, Res,
     UnauthorizedException
 } from "@nestjs/common";
+import {MascotaCreateDto} from "./dto/mascota.create-dto";
+import {validate} from "class-validator";
 
 // /juegos-http ya es un segmento de la url
 // http://localhost:3001/juegos-http
@@ -72,16 +74,70 @@ export class HttpJuegoController {
     }
 
 
+
     @Post ('parametros-cuerpo')
-    parametrosCuerpo(
+    @HttpCode(200)
+    //Clase 10-07-2020
+    async parametrosCuerpo( //async sirve para utilizar promesas
         @Body() parametrosDeCuerpo
     ){
-        console.log('Parametros de cuerpo', parametrosDeCuerpo);
-        return 'Registro creado';
+        //promesas
+        //guardar los datos dentro dentro de una instancia de la nueva clase
+        const mascotaValida = new MascotaCreateDto();
+        mascotaValida.hijos = parametrosDeCuerpo.hijos;
+        mascotaValida.edad = parametrosDeCuerpo.edad;
+        mascotaValida.vivo = parametrosDeCuerpo.vivo;
+        mascotaValida.nombre = parametrosDeCuerpo.nombre;
+        mascotaValida.peso = parametrosDeCuerpo.peso;
+
+        //siempre con el sync tenemos que usar try catch
+        try {
+            const existenErrores = await validate(mascotaValida) //con el await siempre se utiliza el bloque try y catch
+            if(existenErrores.length > 0){
+                console.log('Errores: ',existenErrores);
+                throw new BadRequestException('Error validando');
+            } else {
+                const mensajeCorrecto = {
+                    mensaje: 'Se creo correctamente'
+                }
+                return mensajeCorrecto;
+            }
+
+        }catch (e) {
+            console.error('Error', e);
+            throw new BadRequestException('Error validando');
+        }
+
+        //validaciones
+        //Es lo más importante
+
+        //console.log('Parametros de cuerpo', parametrosDeCuerpo);
+        //return 'Registro creado';
     }
 
-    //validaciones
-    //Es lo más importante
+    //COOKIES
+    //1 Guardar una cookie Insegura
+    //2 Guardar una cookie Segura
+    //3 Mostrar cookies
+
+    @Get('guardarCookieInsegura')
+    guardarCookieInsegura( //vamos a usar un framework
+        @Query() parametrosConsulta,
+        @Req() req,  //request - RESPUESTA
+        @Res() res  //response - RESPUESTA
+    ){
+        //guardar las cookies
+        res.cookie(
+            'galletaInsegura',
+            'Tengo hambre'
+        );
+        const mensaje = {
+            mensaje: 'ok'
+        };
+        res.send(mensaje);
+    }
+
+
 
 
 
