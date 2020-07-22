@@ -8,8 +8,8 @@ async function bootstrap() {
   * AQUI SE REALIZAN LAS CONFIGURACIONES
   * ANTES DEL APP.LISTEN()
    */
-  app.use(cookieParser()) //estamos haciendo una configuracion de express JS
-
+  app.use(cookieParser('Ya no me quiero morir jejex')) //estamos haciendo una configuracion de express JS
+    //Lo que le mandamos en las comillas simples es el secreto
   await app.listen(3001);
 }
 bootstrap();

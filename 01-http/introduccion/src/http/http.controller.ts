@@ -123,7 +123,7 @@ export class HttpJuegoController {
     @Get('guardarCookieInsegura')
     guardarCookieInsegura( //vamos a usar un framework
         @Query() parametrosConsulta,
-        @Req() req,  //request - RESPUESTA
+        @Req() req,  //request - PETICIÓN
         @Res() res  //response - RESPUESTA
     ){
         //guardar las cookies
@@ -132,13 +132,57 @@ export class HttpJuegoController {
             'Tengo hambre'
         );
         const mensaje = {
-            mensaje: 'ok'
+            mensaje: 'ok-Insegura'
         };
         res.send(mensaje);
     }
 
 
+    @Get('guardarCookieSegura')
+    guardarCookieSegura( //vamos a usar un framework
+        @Query() parametrosConsulta,
+        @Req() req,  //request - PETICIÓN
+        @Res() res  //response - RESPUESTA
+    ){
+        //guardar las cookies
+        res.cookie(
+            'galletaSegura',
+            'Aplicaciones Web',
+            {
+                secure: true //Con esto se guarda una cookie segura
+            }
+        );
+        const mensaje = {
+            mensaje: 'ok-Segura'
+        };
+        res.send(mensaje);
+    }
 
+
+    //Para mostrar las cookies
+    @Get ('mostrarCookies')
+    mostrarCookies(
+        @Req() req
+    ){
+        const mensaje = {
+            sinFirmar : req.cookies,
+            firmadas : req.signedCookies
+        };
+
+        return mensaje;
+    }
+
+
+    @Get ('guardarCookieFirmada')
+    public guardarCookieFirmada(
+        @Res() res
+    ){
+        res.cookie('firmada','policia',{signed: true});
+        const mensaje = {
+            mensaje: 'ok-firmada'
+        };
+        res.send(mensaje);
+    }
 
 
 
