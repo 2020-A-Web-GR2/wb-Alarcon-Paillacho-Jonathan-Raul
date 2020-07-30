@@ -18,7 +18,7 @@ import {UsuarioEntity} from "./usuario/usuario.entity";
           port: 3306, // puerto
           username: 'root', //usuario
           password: 'root', // password
-          database: 'test', // Base de datos
+          database: 'ejemploweb', // Base de datos
           entities: [
               UsuarioEntity
           ], // TODAS LAS ENTIDADES, tienen que estar incluidas todas las entidades que creamos
