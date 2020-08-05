@@ -11,7 +11,7 @@
 import {
     IsNumber,
     IsNotEmpty,
-    IsInt
+    IsInt, IsPositive
 } from "class-validator";
 
 export class NumeroCreateDto {

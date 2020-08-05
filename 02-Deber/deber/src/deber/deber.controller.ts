@@ -20,17 +20,21 @@ import {validate} from "class-validator";
 
 export class DeberController {
 
+    puntaje = 100;
+
     @Get ('suma/:segundo')
     @HttpCode(200)
     async suma(
         @Query() num1,
         @Param() num2,
-        @Req() req
+        @Req() req,
+        @Res() res
     ){
-        const nombreUsuario = req.cookies
-        const nombreComprobar = String(nombreUsuario.persona)
-        console.log(nombreComprobar)
-        if (nombreComprobar){
+        //const nombreUsuario = req.cookies
+        //const nombreComprobar = String(nombreUsuario.persona)
+        //console.log(nombreComprobar)
+        //nombreComprobar
+        if (req.cookies['persona'] != null){
             console.log("INICIA LA SUMA")
             const primero = Number(num1.primero)
             //console.log(typeof(primero))
@@ -48,9 +52,21 @@ export class DeberController {
                 } else {
                     const numero1 = Number(num1.primero);
                     const numero2 = Number(num2.segundo);
-                    console.log(numero1)
-                    console.log(numero2)
-                    return "La suma de los dos números es: " + (numero1 + numero2);
+                    const suma = numero1 + numero2
+                    const puntaje = req.signedCookies['puntaje'] - Math.abs(suma)
+
+                    if (puntaje <= 0){
+                        res.cookie('puntaje',100,{signed:true});
+                        const mensaje = 'Sobrepasó su puntaje disponible, los puntos se cargaran nuevamente'
+                        res.send(mensaje)
+                    }else{
+                        res.cookie('puntaje',puntaje,{signed:true});
+                        const mensaje = 'La suma de los dos números es: ' + suma + ' Y el puntaje es: ' + puntaje
+                        res.send(mensaje)
+                    }
+                    //console.log(numero1)
+                    //console.log(numero2)
+                    //return "La suma de los dos números es: " + (numero1 + numero2);
                 }
 
             }catch (e) {
@@ -58,7 +74,7 @@ export class DeberController {
                 throw new BadRequestException('Error validando');
             }
         }else {
-            console.log("No existe el nombre")
+            throw new BadRequestException('Usuario no registrado')
         }
 
         //console.log(nombreComprobar)
@@ -79,12 +95,13 @@ export class DeberController {
     async resta(
         @Body() num1,
         @Query() num2,
-        @Req() req
+        @Req() req,
+        @Res() res
     ){
 
-        const nombreUsuario = req.cookies
-        const nombreComprobar = String(nombreUsuario.persona)
-        if (nombreComprobar){
+        //const nombreUsuario = req.cookies
+        //const nombreComprobar = String(nombreUsuario.persona)
+        if (req.cookies['persona'] != null){
             console.log("INICIA LA RESTA")
             const primero = Number(num1.primero)
             //console.log(typeof(primero))
@@ -102,9 +119,21 @@ export class DeberController {
                 } else {
                     const numero1 = Number(num1.primero);
                     const numero2 = Number(num2.segundo);
-                    console.log(numero1)
-                    console.log(numero2)
-                    return "La resta de los dos números es: " + (numero1 - numero2);
+                    const resta = numero1 - numero2
+                    const puntaje = req.signedCookies['puntaje'] - Math.abs(resta)
+
+                    if (puntaje <= 0){
+                        res.cookie('puntaje',100,{signed:true});
+                        const mensaje = 'Sobrepasó su puntaje disponible, los puntos se cargaran nuevamente'
+                        res.send(mensaje)
+                    }else{
+                        res.cookie('puntaje',puntaje,{signed:true});
+                        const mensaje = 'La resta de los dos números es: ' + resta + ' Y el puntaje es: ' + puntaje
+                        res.send(mensaje)
+                    }
+                    //console.log(numero1)
+                    //console.log(numero2)
+                    //return "La resta de los dos números es: " + (numero1 - numero2);
                 }
 
             }catch (e) {
@@ -112,7 +141,7 @@ export class DeberController {
                 throw new BadRequestException('Error validando');
             }
         }else{
-            console.log("No existe el nombre")
+            throw  new BadRequestException('Usuario no registrado')
         }
 
 
@@ -128,12 +157,13 @@ export class DeberController {
     async multiplicacion(
         @Headers() num1,
         @Param() num2,
-        @Req() req
+        @Req() req,
+        @Res() res
     ){
 
-        const nombreUsuario = req.cookies
-        const nombreComprobar = String(nombreUsuario.persona)
-        if (nombreComprobar){
+        //const nombreUsuario = req.cookies
+        //const nombreComprobar = String(nombreUsuario.persona)
+        if (req.cookies['persona'] != null){
 
             console.log("INICIA LA MULTIPLICACION")
             const primero = Number(num1.primero)
@@ -152,9 +182,21 @@ export class DeberController {
                 } else {
                     const numero1 = Number(num1.primero);
                     const numero2 = Number(num2.segundo);
-                    console.log(numero1)
-                    console.log(numero2)
-                    return "La multiplicacion de los dos números es: " + (numero1 * numero2);
+                    //console.log(numero1)
+                    //console.log(numero2)
+                    //return "La multiplicacion de los dos números es: " + (numero1 * numero2);
+                    const multiplicacion = numero1 * numero2
+                    const puntaje = req.signedCookies['puntaje'] - Math.abs(multiplicacion)
+
+                    if (puntaje <= 0){
+                        res.cookie('puntaje',100,{signed:true});
+                        const mensaje = 'Sobrepasó su puntaje disponible, los puntos se cargaran nuevamente'
+                        res.send(mensaje)
+                    }else{
+                        res.cookie('puntaje',puntaje,{signed:true});
+                        const mensaje = 'La multiplicacion de los dos números es: ' + multiplicacion + ' Y el puntaje es: ' + puntaje
+                        res.send(mensaje)
+                    }
                 }
 
             }catch (e) {
@@ -162,7 +204,7 @@ export class DeberController {
                 throw new BadRequestException('Error validando');
             }
         }else{
-            console.log("No existe el nombre")
+            throw  new BadRequestException('Usuario no registrado')
         }
 
         //console.log('num2',num1);
@@ -175,12 +217,13 @@ export class DeberController {
     async division(
         @Param() num1,
         @Query() num2,
-        @Req() req
+        @Req() req,
+        @Res() res
     ) {
 
-        const nombreUsuario = req.cookies
-        const nombreComprobar = String(nombreUsuario.persona)
-        if (nombreComprobar) {
+        //const nombreUsuario = req.cookies
+        //const nombreComprobar = String(nombreUsuario.persona)
+        if (req.cookies['persona'] != null) {
 
             console.log("INICIA LA DIVISION")
             const primero = Number(num1.primero)
@@ -193,6 +236,7 @@ export class DeberController {
             numeroValido.numero1 = primero;
             numeroValido.numero2 = segundo;
 
+
             try {
                 const existenErrores = await validate(numeroValido) //con el await siempre se utiliza el bloque try y catch
                 if (existenErrores.length > 0) {
@@ -201,9 +245,21 @@ export class DeberController {
                 } else {
                     const numero1 = Number(num1.primero);
                     const numero2 = Number(num2.segundo);
-                    console.log(numero1)
-                    console.log(numero2)
-                    return "La division de los dos números es: " + (numero1 / numero2);
+                    //console.log(numero1)
+                    //console.log(numero2)
+                    //return "La division de los dos números es: " + (numero1 / numero2);
+                    const division = numero1 / numero2
+                    const puntaje = req.signedCookies['puntaje'] - Math.abs(division)
+
+                    if (puntaje <= 0){
+                        res.cookie('puntaje',100,{signed:true});
+                        const mensaje = 'Sobrepasó su puntaje disponible, los puntos se cargaran nuevamente'
+                        res.send(mensaje)
+                    }else{
+                        res.cookie('puntaje',puntaje,{signed:true});
+                        const mensaje = 'La division de los dos números es: ' + division + ' Y el puntaje es: ' + puntaje
+                        res.send(mensaje)
+                    }
                 }
 
             } catch (e) {
@@ -211,7 +267,7 @@ export class DeberController {
                 throw new BadRequestException('Error validando');
             }
         } else {
-            console.log("No existe el nombre")
+            throw  new BadRequestException('Usuario no registrado')
         }
 
         //console.log('num1',num1);
@@ -227,16 +283,15 @@ export class DeberController {
     ){
         const nombre = String(parametrosConsulta.persona);
 
-        if(nombre){
-            res.cookie(
-                'persona',
-                String(parametrosConsulta.persona));
+        if(nombre != null){
+            res.cookie('persona', parametrosConsulta.persona);
+            res.cookie('puntaje',100,{signed:true})
+            res.send("Usuario activado")
+        }else {
+            throw new BadRequestException('Error al guardar el usuario')
         }
 
-        const mensaje = {
-            mensaje: 'Bienvenido ' + (nombre)
-        };
-        res.send(mensaje);
+
     }
 
 
