@@ -1,4 +1,5 @@
-import {Column, Entity, Index, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MascotaEntity } from '../mascota/mascota.entity';
 
 @Index([
     'nombre',
@@ -69,5 +70,27 @@ export class UsuarioEntity {
         name: 'fecha_hora_nacimiento'
     })
     fechaHoraNacimiento?: string;
+
+
+
+    // Aquí se pone las relaciones
+    // Siempre al último
+
+    // El usuario tiene una relacion de uno a mucho
+
+    //Se define el tipo de datos y con que tabla nos vamos a relacionar
+
+    @OneToMany(
+      //Lo primero es el tipo
+      // Que campos vamos a relacionar
+      type => MascotaEntity, // Que entidad nos vamos a relacionar
+
+      // Vamos a especificar el campo por el que se van a relacionar
+      mascota => mascota.usuario
+    )
+    // Siempre lo vamos a definir como plural
+    mascotas: MascotaEntity[];
+
+
 
 }
