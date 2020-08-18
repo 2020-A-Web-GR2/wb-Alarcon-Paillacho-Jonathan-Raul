@@ -1,4 +1,4 @@
-import {IsAlpha, IsDate, IsNotEmpty, IsNumber, IsPositive, MaxLength, MinLength} from "class-validator";
+import {IsAlpha, IsDate, IsNotEmpty, IsNumber, IsOptional, IsPositive, MaxLength, MinLength} from "class-validator";
 
 export class UsuarioUpdateDto {
     @IsNumber()
@@ -9,19 +9,25 @@ export class UsuarioUpdateDto {
     @IsAlpha()
     @IsNotEmpty()
     @MaxLength(12)
-    cedula: string;
+    cedula?: string;
 
     @IsAlpha()
     @IsNotEmpty()
     @MaxLength(20)
     @MinLength(3)
-    nombre: string
+    nombre?: string
 
     @IsAlpha()
+    @IsOptional()
     @MaxLength(20)
     @MinLength(3)
     apellido: string
 
+    @IsNumber()
+    @IsOptional()
+    @IsPositive()
+    sueldo?: string
+
     @IsDate()
-    fechaNacimiento: string
+    fechaNacimiento?: string
 }
