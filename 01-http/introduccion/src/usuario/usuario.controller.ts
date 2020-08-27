@@ -7,9 +7,10 @@ import {
     InternalServerErrorException,
     Param,
     Post,
-    Put,
+    Put, Res,
 } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
+import {MascotaService} from "../mascota/mascota.service";
 
 @Controller('usuario')
 
@@ -35,8 +36,11 @@ export class UsuarioController {
     // clase 13/08/2020
     constructor(
       // Aquí se inyectan las dependencias
-      private readonly _usuarioService: UsuarioService
+      private readonly _usuarioService: UsuarioService,
       // Aquí estamos inyectando las dependencias que queremos en el archivo
+
+      private readonly _mascotaService: MascotaService
+
     ) {
     }
 
@@ -161,6 +165,100 @@ export class UsuarioController {
     //Vamos a definir un metodo para crear un mascota Servicio
 
 
+    // ESTE ES UN METODO CUSTOMIZADO POR NOSOTROS
+    @Post('crearUsuarioyCrearMascota')
+    async crearUsuarioyCrearMascota(
+        @Body() parametrosCuerpo
+    ){
+        const usuario = parametrosCuerpo.usuario;
+        const mascota = parametrosCuerpo.mascota;
+
+        //Validar Usuario
+        //Validar Mascota
+        // CREAMOS LOS DOS
+        let usuarioCreado;
+        try {
+            usuarioCreado = await this._usuarioService.creaUno(usuario);
+        } catch (e) {
+            console.error(e);
+            throw new InternalServerErrorException({
+                mensaje: 'Error creando Usuario'
+            })
+        }
+
+        if (usuarioCreado){
+            mascota.usuario = usuarioCreado.id;
+            let mascotaCreada;
+            try{
+                mascotaCreada = await this._mascotaService.creaNuevaMascota(mascota);
+            }catch (e) {
+                console.error(e);
+                throw new InternalServerErrorException({
+                    mensaje: 'Error creando Mascota'
+                })
+            }
+            if (mascotaCreada){
+                return{
+                    mascota: mascotaCreada,
+                    usuario: usuarioCreado
+                }
+            } else {
+                throw new InternalServerErrorException({
+                    mensaje: 'Error creando mascota'
+                })
+            }
+        } else {
+            throw new InternalServerErrorException({
+                mensaje: 'error creando usuario'
+            })
+        }
+    }
+
+
+
+    // npm install ejs para instalar el ejs
+    @Get('vista/usuario')
+    vistaUsuario(
+        @Res() res
+    ){
+        const nombreControlador = 'Jonathan'
+        res.render( // con esto se puede renderizar una vista
+            'usuario/ejemplo', // Nombre de la vista (Archivo)
+            { // Parametros de la vista
+                nombre: nombreControlador
+            }
+        )
+    }
+
+    @Get('vista/faq')
+    faq(
+        @Res() res
+    ){
+
+        res.render( // con esto se puede renderizar una vista
+            'usuario/faq'
+        )
+    }
+
+    @Get('vista/inicio')
+    inicio(
+        @Res() res
+    ){
+
+        res.render( // con esto se puede renderizar una vista
+            'usuario/inicio'
+        )
+    }
+
+    @Get('vista/login')
+    login(
+        @Res() res
+    ){
+
+        res.render( // con esto se puede renderizar una vista
+            'usuario/login'
+        )
+    }
 
 
 }

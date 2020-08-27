@@ -7,15 +7,15 @@ import { MascotaEntity } from './mascota.entity';
 @Injectable()
 
 export class MascotaService {
-  constructor(
-    @InjectRepository(MascotaService) //Esto se hace una sola vez por cada servicio
-    private repositorio: Repository<MascotaEntity>
-  ) {
-  }
+    constructor(
+      @InjectRepository(MascotaEntity) //Esto se hace una sola vez por cada servicio
+      private repositorio: Repository<MascotaEntity>
+    ) {
+    }
 
-  creaNuevaMascota(mascota: MascotaEntity){
-    return this.repositorio.save(mascota);
-  }
+    creaNuevaMascota(mascota: MascotaEntity){
+      return this.repositorio.save(mascota);
+    }
 
 
 }
