@@ -4,7 +4,7 @@ import {
     Controller,
     Delete,
     Get,
-    InternalServerErrorException,
+    InternalServerErrorException, NotFoundException,
     Param,
     Post,
     Put, Res,
@@ -241,13 +241,26 @@ export class UsuarioController {
     }
 
     @Get('vista/inicio')
-    inicio(
+    async inicio(
         @Res() res
     ){
 
-        res.render( // con esto se puede renderizar una vista
-            'usuario/inicio'
-        )
+        let resultadoEncontrado
+        try {
+            resultadoEncontrado = await this._usuarioService.buscarTodos();
+        } catch (error) {
+            throw new InternalServerErrorException('Error encontrando usuarios')
+        }
+        if (resultadoEncontrado) {
+            res.render(
+                'usuario/inicio',
+                {
+                    arregloUsuarios: resultadoEncontrado
+                });
+        } else {
+            throw new NotFoundException('No se encontraron usuarios')
+        }
+
     }
 
     @Get('vista/login')
@@ -257,6 +270,16 @@ export class UsuarioController {
 
         res.render( // con esto se puede renderizar una vista
             'usuario/login'
+        )
+    }
+
+    @Get('vista/crear')
+    crear(
+        @Res() res
+    ){
+
+        res.render( // con esto se puede renderizar una vista
+            'usuario/crear'
         )
     }
 
