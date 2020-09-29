@@ -1,0 +1,77 @@
+
+<% const existeMarca = typeof carta != 'undefined'%>
+
+<% let existeNombre = typeof nombre !== 'undefined' %>
+<% let existeColor = typeof color !== 'undefined' %>
+<% let existeAnios= typeof anios !== 'undefined' %>
+<% let existeOrigen= typeof origen !== 'undefined' %>
+<% let existeEmpresa = typeof empresa !== 'undefined' %>
+
+
+
+<h1> <%= existeMarca? 'Editar' : 'Crear'%> Marca</h1>
+<!-- Setear el nombre y apellido-->
+<%if(existeMarca){%>
+    <% existeNombre = true %>
+    <% existeColor = true %>
+    <% existeAnios = true %>
+    <% existeOrigen = true %>
+    <% existeEmpresa = true %>
+
+    <% nombre = marca.nombre %>
+    <% color = marca.color %>
+    <% anios = marca.anios %>
+    <% origen = marca.origen %>
+    <% empresa = marca.empresa %>
+
+<%}%>
+
+
+<% if(typeof error !== 'undefined') { %>
+    <p>MENSAJE ERROR: <%= error %></p>
+<% } %>
+
+<form action="<%= existeMarca ? '/marca/editarDesdeVista/' + carta.id : '/marca/crearDesdeVista' %>"
+      method="POST">
+
+    <label for="nombreID">Ingrese el nombre de la marca:</label>
+    <input  class="controls" id="nombreID" type="text"  <% if(existeNombre){%>
+            disabled
+            <%}%>
+            name="nombre" value="<%= existeNombre ? nombre : '' %>">
+    <br>
+
+    <label for="colorID">Ingrese el color de la marca:</label>
+    <input  class="controls" id="colorID" type="text"  <% if(existeColor){%>
+            disabled
+            <%}%>
+            name=color value="<%= existeColor ? color : '' %>">
+    <br>
+
+    <label for="aniosID">Ingrese el año de la marca:</label>
+    <input   class="controls" id="aniosID" type="number" <% if(existeAnios){%>
+             disabled
+            <%}%>
+             name="anios" value="<%= existeAnios ? anios : '' %>">
+    <br>
+
+    <label for="origenID">Ingrese el origen de la marca:</label>
+    <input  class="controls" id="origenID" type="text"
+    <% if(existeOrigen){%>
+            disabled
+            <%}%>
+
+            name="origen"
+            value="<%= existeOrigen ? origen : '' %>">
+    <br>
+    <label for="empresaID">Ingrese la empresa:</label>
+    <input class="controls" id="empresaID" type="text"
+
+           name="empresa"
+           value="<%= existeEmpresa ? empresa : '' %>">
+    <br>
+
+    <button class="botons" type="submit">Guardar Nueva Marca</button>
+
+
+</form>

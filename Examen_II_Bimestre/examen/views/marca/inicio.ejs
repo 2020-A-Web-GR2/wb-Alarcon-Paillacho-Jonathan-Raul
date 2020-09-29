@@ -1,0 +1,51 @@
+<h1>Página principal</h1>
+<body>
+<div id="menu">
+    <ul>
+        <li>
+            <a href="/marca/vista/inicio">Inicio</a>
+        </li>
+        <li>
+            <a href="/marca/vista/crear">Crear marca</a>
+        </li>
+        <li>
+            <a href="/marca/vista/logout">Logout</a>
+        </li>
+    </ul>
+</div>
+
+<table>
+    <!--table row-->
+    <tr>
+        <!--table header-->
+        <th>Nombre de la marca</th>
+        <th>Color de la marca</th>
+        <th>Años de la marca</th>
+        <th>Origen de la marca</th>
+        <th>Empresa que tiene la marca</th>
+        <th>Acciones</th>
+    </tr>
+    <% arregloMarcas.forEach( (objeto)=>{ %>
+        <tr>
+            <td><%= objeto.nombre %></td>
+            <td><%= objeto.color%></td>
+            <td><%= objeto.anios%></td>
+            <td><%= objeto.origen%></td>
+            <td><%= objeto.empresa%></td>
+
+            <td>
+                <a href="/marca/vista/editar/<%= objeto.id %>">
+                    <button>Editar</button>
+                </a>
+                <form action="/marca/eliminarDesdeVista/<%= objeto.id %>"
+                      method="POST"
+                >
+                    <!--                    POST /usuario/eliminarDesdeVista/:id -->
+                    <button type="submit">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+    <% } ) %>
+
+</table>
+</body>
