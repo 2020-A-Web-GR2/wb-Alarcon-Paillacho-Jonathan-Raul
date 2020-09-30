@@ -140,7 +140,7 @@ export class MarcaController {
         if (estaLogeado) {
             let resultadoEncontrado
             try {
-                resultadoEncontrado = await this._marcaService.buscarTodos();
+                resultadoEncontrado = await this._marcaService.buscarTodos(parametrosconsulta.busqueda);
             } catch (error) {
                 throw new InternalServerErrorException('Error buscando marcas')
             }

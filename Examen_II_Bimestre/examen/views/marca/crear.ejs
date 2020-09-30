@@ -1,5 +1,6 @@
+<link rel="stylesheet" href="/css/estilos3.css">
 
-<% const existeMarca = typeof carta != 'undefined'%>
+<% const existeMarca = typeof marca != 'undefined'%>
 
 <% let existeNombre = typeof nombre !== 'undefined' %>
 <% let existeColor = typeof color !== 'undefined' %>
@@ -31,7 +32,7 @@
     <p>MENSAJE ERROR: <%= error %></p>
 <% } %>
 
-<form action="<%= existeMarca ? '/marca/editarDesdeVista/' + carta.id : '/marca/crearDesdeVista' %>"
+<form action="<%= existeMarca ? '/marca/editarDesdeVista/' + marca.id : '/marca/crearDesdeVista' %>"
       method="POST">
 
     <label for="nombreID">Ingrese el nombre de la marca:</label>
@@ -42,24 +43,17 @@
     <br>
 
     <label for="colorID">Ingrese el color de la marca:</label>
-    <input  class="controls" id="colorID" type="text"  <% if(existeColor){%>
-            disabled
-            <%}%>
+    <input  class="controls" id="colorID" type="text"
             name=color value="<%= existeColor ? color : '' %>">
     <br>
 
     <label for="aniosID">Ingrese el año de la marca:</label>
-    <input   class="controls" id="aniosID" type="number" <% if(existeAnios){%>
-             disabled
-            <%}%>
+    <input   class="controls" id="aniosID" type="number"
              name="anios" value="<%= existeAnios ? anios : '' %>">
     <br>
 
     <label for="origenID">Ingrese el origen de la marca:</label>
     <input  class="controls" id="origenID" type="text"
-    <% if(existeOrigen){%>
-            disabled
-            <%}%>
 
             name="origen"
             value="<%= existeOrigen ? origen : '' %>">
