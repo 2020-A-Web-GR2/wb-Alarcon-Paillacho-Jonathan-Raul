@@ -276,7 +276,7 @@ export class UsuarioController {
         )
     }
 
-    @Get('vista/crear')
+    /*@Get('vista/crear')
     crear(
         @Res() res
     ){
@@ -284,7 +284,7 @@ export class UsuarioController {
         res.render( // con esto se puede renderizar una vista
             'usuario/crear'
         )
-    }
+    }*/
 
     @Get('vista/crear')
     crearUsuarioVista(
